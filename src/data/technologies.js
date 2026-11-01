@@ -16,7 +16,6 @@ export const technologies = [
   { name: "AWS", category: "Cloud" },
   { name: "Docker", category: "Cloud" },
   { name: "Linux", category: "Cloud" },
-  { name: "Nginx", category: "Cloud" },
   { name: "Git", category: "Cloud" },
   { name: "Power Apps", category: "Automation" },
   { name: "Power Automate", category: "Automation" },

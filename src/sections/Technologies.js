@@ -12,16 +12,9 @@ const technologyIcons = {
   "Apache Airflow": "apacheairflow",
   "Apache Spark": "apachespark",
   PostgreSQL: "postgresql",
-  "Power BI": "powerbi",
-  AWS: "amazonaws",
   Docker: "docker",
   Linux: "linux",
-  Nginx: "nginx",
   Git: "git",
-  "Power Apps": "powerapps",
-  "Power Automate": "powerautomate",
-  SharePoint: "microsoftsharepoint",
-  Excel: "microsoftexcel",
   HTML: "html5",
   CSS: "css",
   "Tailwind CSS": "tailwindcss",
@@ -30,19 +23,20 @@ const technologyIcons = {
 
 export function renderTechnologies() {
   const cards = technologies
-    .map(
-      ({ name, category }, index) => `
+    .map(({ name, category }, index) => {
+      const remoteIcon = technologyIcons[name];
+      return `
         <article class="technology-card snap-start" aria-label="${name}, ${category}">
           <span class="technology-card__index" aria-hidden="true">${String(index + 1).padStart(2, "0")}</span>
           <span class="technology-card__mark" aria-hidden="true">
-            ${technologyIcons[name]
-              ? `<img src="https://cdn.simpleicons.org/${technologyIcons[name]}/60A5FA" alt="" loading="lazy" onerror="this.hidden=true" />`
+            ${remoteIcon
+              ? `<img src="https://cdn.simpleicons.org/${remoteIcon}/60A5FA" alt="" loading="lazy" onerror="this.hidden=true" />`
               : `<span>${name.slice(0, 2).toUpperCase()}</span>`}
           </span>
           <h3 class="technology-card__name">${name}</h3>
           <p class="technology-card__category">${category}</p>
-        </article>`
-    )
+        </article>`;
+    })
     .join("");
 
   return `
