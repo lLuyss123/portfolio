@@ -59,7 +59,7 @@ export function initHeroAvatar() {
       ? (width - drawWidth) / 2
       : width - regionWidth - rightInset + (regionWidth - drawWidth) / 2;
     const offsetY = mobileLayout.matches ? height * 0.05 : (height - drawHeight) / 2;
-    const pixelRatio = window.devicePixelRatio || 1;
+    const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
     const mask = {
       "--avatar-mask-center-x": `${(offsetX + drawWidth / 2) / pixelRatio}px`,
       "--avatar-mask-center-y": `${(offsetY + drawHeight * 0.5) / pixelRatio}px`,
