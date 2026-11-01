@@ -40,7 +40,7 @@ export function renderTechnologies() {
     .join("");
 
   return `
-  <section id="technologies" class="py-20 bg-[#0f172a]">
+  <section id="technologies" class="bg-section py-20">
     <div class="technology-section">
       ${renderSectionTitle("Tecnologías", "Herramientas que uso para construir soluciones.")}
       <div class="technology-carousel" data-technology-carousel>

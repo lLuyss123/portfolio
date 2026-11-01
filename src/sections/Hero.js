@@ -10,21 +10,21 @@ export function renderHero() {
     </figure>
     <div class="hero-content max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-10 items-center">
       <div class="hero-copy">
-        <h1 class="text-5xl font-bold text-white">${personal.name}</h1>
-        <p class="text-xl text-blue-400 mt-2">${personal.title}</p>
-        <p class="text-[#94a3b8] mt-4">${personal.description}</p>
+        <h1 class="text-5xl font-bold text-content">${personal.name}</h1>
+        <p class="mt-2 text-xl text-accent">${personal.title}</p>
+        <p class="mt-4 text-muted">${personal.description}</p>
         <div class="flex flex-wrap gap-2 mt-4">
-          ${personal.specialties.map((s) => `<span class="px-3 py-1 text-sm rounded-full bg-[#111a2e] border border-[#1f2a44]">${s}</span>`).join("")}
+          ${personal.specialties.map((s) => `<span class="rounded-full border border-outline bg-surface px-3 py-1 text-sm text-content">${s}</span>`).join("")}
         </div>
         <div class="flex flex-wrap gap-3 mt-6">
           ${renderButton("Ver proyectos", "#projects")}
           ${renderButton("Descargar CV", personal.cv, "secondary", "CV-Luis-Mejia.pdf")}
           ${renderButton("Contactarme", "#contact", "secondary")}
         </div>
-        <div class="flex gap-4 mt-6 text-[#94a3b8]">
-          <a href="${personal.github}" target="_blank" rel="noopener" class="hover:text-white">GitHub</a>
-          <a href="${personal.linkedin}" target="_blank" rel="noopener" class="hover:text-white">LinkedIn</a>
-          <a href="mailto:lmejiaidep@gmail.com" class="hover:text-white">Gmail</a>
+        <div class="mt-6 flex gap-4 text-muted">
+          <a href="${personal.github}" target="_blank" rel="noopener" class="hover:text-content">GitHub</a>
+          <a href="${personal.linkedin}" target="_blank" rel="noopener" class="hover:text-content">LinkedIn</a>
+          <a href="mailto:lmejiaidep@gmail.com" class="hover:text-content">Gmail</a>
         </div>
       </div>
     </div>

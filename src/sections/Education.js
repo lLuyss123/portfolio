@@ -5,9 +5,9 @@ export function renderEducation() {
   const items = education
     .map(
       (e) => `
-      <div class="bg-[#111a2e] border border-[#1f2a44] rounded-xl p-6">
-        <h3 class="text-lg font-semibold text-white">${e.degree}</h3>
-        <p class="text-[#94a3b8]">${e.institution}</p>
+      <div class="rounded-xl border border-outline bg-surface p-6">
+        <h3 class="text-lg font-semibold text-content">${e.degree}</h3>
+        <p class="text-muted">${e.institution}</p>
       </div>`
     )
     .join("");

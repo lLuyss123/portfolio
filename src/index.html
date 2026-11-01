@@ -3,6 +3,29 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <script>
+      (() => {
+        const themeKey = "portfolio-theme";
+        const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        let theme = systemPrefersDark ? "dark" : "light";
+        let preference = "system";
+
+        try {
+          const savedTheme = localStorage.getItem(themeKey);
+          if (savedTheme === "light" || savedTheme === "dark") {
+            theme = savedTheme;
+            preference = "user";
+          }
+        } catch (error) {
+          console.warn("No se pudo leer la preferencia de tema guardada.", error);
+        }
+
+        document.documentElement.classList.toggle("dark", theme === "dark");
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.dataset.themePreference = preference;
+      })();
+    </script>
     <title>Luis Mejía | Systems Engineer</title>
     <meta name="description" content="Portafolio profesional de Luis Mejía, Ingeniero de Sistemas especializado en backend, data engineering y automatización." />
     <meta property="og:title" content="Luis Mejía | Systems Engineer" />

@@ -5,17 +5,17 @@ export function renderProjects() {
   const cards = projects
     .map(
       (p) => `
-      <article class="bg-[#111a2e] border border-[#1f2a44] rounded-xl p-6 hover:border-blue-500 transition">
-        <h3 class="text-xl font-semibold text-white">${p.name}</h3>
-        <p class="text-[#94a3b8] mt-2">${p.description}</p>
-        <p class="text-sm text-[#94a3b8] mt-3"><strong class="text-white">Problema:</strong> ${p.problem}</p>
-        <p class="text-sm text-[#94a3b8] mt-1"><strong class="text-white">Solución:</strong> ${p.solution}</p>
+      <article class="rounded-xl border border-outline bg-surface p-6 transition hover:border-accent">
+        <h3 class="text-xl font-semibold text-content">${p.name}</h3>
+        <p class="mt-2 text-muted">${p.description}</p>
+        <p class="mt-3 text-sm text-muted"><strong class="text-content">Problema:</strong> ${p.problem}</p>
+        <p class="mt-1 text-sm text-muted"><strong class="text-content">Solución:</strong> ${p.solution}</p>
         <div class="flex flex-wrap gap-2 mt-4">
-          ${p.technologies.map((t) => `<span class="px-2 py-1 text-xs rounded bg-[#0b1220] border border-[#1f2a44]">${t}</span>`).join("")}
+          ${p.technologies.map((t) => `<span class="rounded border border-outline bg-surface-raised px-2 py-1 text-xs text-muted">${t}</span>`).join("")}
         </div>
         <div class="flex gap-3 mt-4">
-          <a href="#" class="text-sm text-blue-400 hover:text-blue-300">Ver proyecto</a>
-          ${p.repository ? `<a href="${p.repository}" target="_blank" rel="noopener" class="text-sm text-[#94a3b8] hover:text-white">Código fuente</a>` : ""}
+          <a href="#" class="text-sm text-accent hover:text-accent-hover">Ver proyecto</a>
+          ${p.repository ? `<a href="${p.repository}" target="_blank" rel="noopener" class="text-sm text-muted hover:text-content">Código fuente</a>` : ""}
         </div>
       </article>`
     )

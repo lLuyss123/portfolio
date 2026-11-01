@@ -10,6 +10,7 @@ import { renderContact } from "./sections/Contact.js";
 import { renderFooter } from "./sections/Footer.js";
 import { initNavbar, initTechnologyCarousel } from "./utils/helpers.js";
 import { initHeroAvatar } from "./utils/avatarAnimation.js";
+import { initThemeToggle } from "./utils/theme.js";
 
 const app = document.getElementById("app");
 app.innerHTML = `
@@ -28,3 +29,4 @@ app.innerHTML = `
 initNavbar();
 initTechnologyCarousel();
 initHeroAvatar();
+initThemeToggle();

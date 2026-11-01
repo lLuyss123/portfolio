@@ -7,8 +7,10 @@ const IDLE_FRAME = 0;
 export function initHeroAvatar() {
   const stage = document.querySelector("[data-avatar-stage]");
   const canvas = stage?.querySelector("[data-avatar-canvas]");
-  const context = canvas?.getContext("2d", { alpha: false });
+  const context = canvas?.getContext("2d");
   if (!stage || !canvas || !context) return;
+  const alphaMask = document.createElement("canvas");
+  const alphaMaskContext = alphaMask.getContext("2d");
 
   const hero = stage.closest("#hero") || stage;
   const strips = Array.from({ length: Math.ceil(FRAME_COUNT / FRAMES_PER_STRIP) }, (_, index) => {
@@ -22,7 +24,7 @@ export function initHeroAvatar() {
   idleImage.src = `${import.meta.env.BASE_URL}images/avatar/look-idle.webp`;
 
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-  const mobileLayout = window.matchMedia("(max-width: 767px)");
+  const mobileLayout = window.matchMedia("(max-width: 900px)");
   let currentFrame = IDLE_FRAME;
   let targetFrame = IDLE_FRAME;
   let frameRequest = 0;
@@ -41,15 +43,36 @@ export function initHeroAvatar() {
     const source = strip?.complete && strip.naturalWidth ? strip : idleImage;
     if (!source.complete || !source.naturalWidth) return;
 
-    context.fillStyle = "#0b1220";
-    context.fillRect(0, 0, width, height);
-    const regionWidth = mobileLayout.matches ? width : width * 0.52;
-    const regionHeight = mobileLayout.matches ? height * 0.5 : height * 0.9;
+    context.clearRect(0, 0, width, height);
+    const isDark = document.documentElement.classList.contains("dark");
+    const regionWidth = mobileLayout.matches
+      ? width * 0.88
+      : width * 0.52;
+    const regionHeight = mobileLayout.matches
+      ? height * 0.42
+      : height * 0.9;
     const scale = Math.min(regionWidth / FRAME_WIDTH, regionHeight / FRAME_HEIGHT);
     const drawWidth = FRAME_WIDTH * scale;
     const drawHeight = FRAME_HEIGHT * scale;
-    const offsetX = mobileLayout.matches ? (width - drawWidth) / 2 : width - regionWidth + (regionWidth - drawWidth) / 2;
-    const offsetY = mobileLayout.matches ? height * 0.12 : (height - drawHeight) / 2;
+    const rightInset = 0;
+    const offsetX = mobileLayout.matches
+      ? (width - drawWidth) / 2
+      : width - regionWidth - rightInset + (regionWidth - drawWidth) / 2;
+    const offsetY = mobileLayout.matches ? height * 0.05 : (height - drawHeight) / 2;
+    const pixelRatio = window.devicePixelRatio || 1;
+    const mask = {
+      "--avatar-mask-center-x": `${(offsetX + drawWidth / 2) / pixelRatio}px`,
+      "--avatar-mask-center-y": `${(offsetY + drawHeight * 0.5) / pixelRatio}px`,
+      "--avatar-mask-radius-x": `${(drawWidth * 0.42) / pixelRatio}px`,
+      "--avatar-mask-radius-y": `${(drawHeight * 0.62) / pixelRatio}px`,
+    };
+
+    Object.entries(mask).forEach(([property, value]) => {
+      if (stage.style.getPropertyValue(property) !== value) {
+        stage.style.setProperty(property, value);
+      }
+    });
+
     context.drawImage(
       source,
       source === strip ? frameInStrip * FRAME_WIDTH : 0,
@@ -61,6 +84,27 @@ export function initHeroAvatar() {
       drawWidth,
       drawHeight
     );
+
+    if (!isDark) {
+      const fade = Math.max(12 * pixelRatio, 1);
+      if (!alphaMaskContext) return;
+      alphaMaskContext.clearRect(0, 0, width, height);
+      alphaMaskContext.filter = `blur(${fade}px)`;
+      alphaMaskContext.fillStyle = "#fff";
+      alphaMaskContext.beginPath();
+      const radius = drawHeight * 0.5;
+      alphaMaskContext.arc(
+        offsetX + drawWidth / 2,
+        offsetY + drawHeight / 2,
+        radius,
+        0,
+        Math.PI * 2
+      );
+      alphaMaskContext.fill();
+      context.globalCompositeOperation = "destination-in";
+      context.drawImage(alphaMask, 0, 0);
+      context.globalCompositeOperation = "source-over";
+    }
   };
 
   const animate = (timestamp) => {
@@ -94,6 +138,7 @@ export function initHeroAvatar() {
   });
   idleImage.addEventListener("load", requestDraw, { once: true });
   if (idleImage.complete && idleImage.naturalWidth) requestDraw();
+  document.addEventListener("themechange", requestDraw);
 
   const resize = new ResizeObserver(([entry]) => {
     const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
@@ -101,6 +146,8 @@ export function initHeroAvatar() {
     height = Math.round(entry.contentRect.height * pixelRatio);
     canvas.width = width;
     canvas.height = height;
+    alphaMask.width = width;
+    alphaMask.height = height;
     requestDraw();
   });
   resize.observe(stage);
