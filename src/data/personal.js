@@ -7,5 +7,5 @@ export const personal = {
   github: "https://github.com/lLuyss123/",
   linkedin: "https://www.linkedin.com/in/luis-mejia-1a46511a9/",
   whatsapp: "https://wa.me/573052398446?text=Hola",
-  cv: "/documents/CV-Luis-Mejia.pdf",
+  cv: `${import.meta.env.BASE_URL}documents/CV-Luis-Mejia.pdf`,
 };
